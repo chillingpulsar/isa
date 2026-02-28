@@ -3,6 +3,7 @@
 	import * as Sidebar from '$lib/components/internals/sidebar/index';
 	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 	import type { RouteStateType } from '../../route-state.svelte';
+	import { page } from '$app/state';
 
 	interface Props {
 		name?: string;
@@ -17,7 +18,10 @@
 	<Sidebar.Menu>
 		{#each routes as item (item.title)}
 			{#if item.childs}
-				<Collapsible.Root open={item.isActive} class="group/collapsible">
+				<Collapsible.Root
+					open={item.childs.some((c) => page.url.pathname === c.url)}
+					class="group/collapsible"
+				>
 					{#snippet child({ props })}
 						<Sidebar.MenuItem {...props}>
 							<Collapsible.Trigger>
@@ -35,7 +39,9 @@
 								<Sidebar.MenuSub>
 									{#each item.childs ?? [] as subItem (subItem.title)}
 										<Sidebar.MenuSubItem>
-											<Sidebar.MenuSubButton>
+											<Sidebar.MenuSubButton
+												class={[page.url.pathname === subItem.url && 'bg-accent font-bold']}
+											>
 												{#snippet child({ props })}
 													<a href={subItem.url} {...props}>
 														<span>{subItem.title}</span>
@@ -51,7 +57,7 @@
 				</Collapsible.Root>
 			{:else}
 				<Sidebar.MenuItem>
-					<Sidebar.MenuButton>
+					<Sidebar.MenuButton class={[page.url.pathname === item.url && 'bg-accent font-bold']}>
 						{#snippet child({ props })}
 							<a href={item.url} {...props}>
 								<item.icon />

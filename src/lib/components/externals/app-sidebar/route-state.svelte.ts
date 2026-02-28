@@ -6,7 +6,6 @@ import ContainerIcon from "@lucide/svelte/icons/container";
 import ShoppingCartIcon from "@lucide/svelte/icons/shopping-cart";
 import ChartColumnIcon from "@lucide/svelte/icons/chart-column";
 import FolderSyncIcon from "@lucide/svelte/icons/folder-sync";
-import { page } from '$app/state';
 
 export const generalRoutes = [
     {
@@ -140,15 +139,7 @@ export class RouteState {
         return this.#automationRoutes;
     }
 
-    get activeRoute() {
-        const path = page.url.pathname;
 
-        const mixedRoutes = [...(this.#generalRoutes ?? []), ...(this.#automationRoutes ?? [])];
-
-        const foundMatch = mixedRoutes.find(route => route.url === path);
-
-        return foundMatch ?? null;
-    }
 
 }
 
